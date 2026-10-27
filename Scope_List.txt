@@ -1,0 +1,21 @@
+MUST: 
+
+- Enemies
+- Basic player
+- Adaptability
+
+SHOULD:
+
+- Varied adaptability: Spawning, attacking, movement, pathing.    
+- A more complicated player to showcase more adaptation.   
+
+
+COULD:
+
+- A much more complex system for combat, enemy and player included. 
+
+
+
+What we would cut first:
+
+- More player features, since this is fundamentally about the enemies. 
