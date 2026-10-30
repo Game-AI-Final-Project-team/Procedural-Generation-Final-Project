@@ -12,7 +12,7 @@ public class EnemyScript : MonoBehaviour
 	[SerializeField] float maxSpeed = 20;
 	[SerializeField] float damping = .8f;
 
-	public EnemyScript(Transform toTrack)
+	public void Init(Transform toTrack)
 	{
 		target = toTrack;
 	}

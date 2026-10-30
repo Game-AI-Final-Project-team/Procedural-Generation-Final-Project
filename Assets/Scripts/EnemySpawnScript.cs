@@ -10,7 +10,10 @@ public class EnemySpawnScript : MonoBehaviour
     [SerializeField] int maxEnemies;
     public GameObject[] spawnPositions;
 
-    private void Start()
+	[Header("References")]
+	[SerializeField] Transform player;
+
+	private void Start()
     {
         spawnPositions = new GameObject[transform.childCount];
         for (int i = 0; i < transform.childCount; ++i)
@@ -37,7 +40,8 @@ public class EnemySpawnScript : MonoBehaviour
             int i = Random.Range(0, enemies.Length);
             int j = Random.Range(0, spawnPositions.Length);
             Vector3 pos = spawnPositions[j].transform.position;
-            Instantiate(enemies[i], spawnPositions[j].transform.position, new Quaternion(0,0,0,0));
+            EnemyScript eScript = Instantiate(enemies[i], spawnPositions[j].transform.position, Quaternion.identity).GetComponent<EnemyScript>();
+            eScript.Init(player);
         }
         StartCoroutine(SpawnTime());
     }    
