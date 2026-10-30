@@ -11,28 +11,36 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Movement
         movementInput = Vector2.zero;
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
             movementInput.y += 1;
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
 			movementInput.y -= 1;
 		}
-		if (Input.GetKey(KeyCode.LeftArrow))
+		if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) 
         {
 			movementInput.x -= 1;
 		}
-		if (Input.GetKey(KeyCode.RightArrow))
+		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
 			movementInput.x += 1;
 		}
         movementInput.Normalize();
+
+        // Rotation
+        Vector3 mousePos = Input.mousePosition;
+		Vector2 direction = mousePos - transform.position;
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(0, 0, angle);
 	}
 
 	private void FixedUpdate()
 	{
+        // Movement
         velocity *= damping;
         velocity += movementInput * acceleration * Time.fixedDeltaTime;
         transform.position += (Vector3)velocity;
