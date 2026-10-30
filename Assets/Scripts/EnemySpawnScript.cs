@@ -20,6 +20,7 @@ public class EnemySpawnScript : MonoBehaviour
         GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in activeEnemies)
             numEnemies++;
+        Debug.Log(numEnemies);
         return numEnemies;
     }
 
