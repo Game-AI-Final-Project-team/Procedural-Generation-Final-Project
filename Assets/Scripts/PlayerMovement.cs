@@ -2,31 +2,39 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [Header ("Stats")]
+    Vector2 movementInput = Vector2.zero;
+    Vector2 velocity = Vector2.zero;
+    [SerializeField] float acceleration = 5;
+    [SerializeField] float maxSpeed = 20;
+    [SerializeField] float damping = .8f;
 
-    // Update is called once per frame
     void Update()
     {
+        movementInput = Vector2.zero;
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            rb.linearVelocityY = 5;
+            movementInput.y += 1;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            rb.linearVelocityY = -5;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
+			movementInput.y -= 1;
+		}
+		if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rb.linearVelocityX = -5;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
+			movementInput.x -= 1;
+		}
+		if (Input.GetKey(KeyCode.RightArrow))
         {
-            rb.linearVelocityX = 5;
-        }
-    }
+			movementInput.x += 1;
+		}
+        movementInput.Normalize();
+	}
+
+	private void FixedUpdate()
+	{
+        velocity *= damping;
+        velocity += movementInput * acceleration * Time.fixedDeltaTime;
+        transform.position += (Vector3)velocity;
+	}
 }
