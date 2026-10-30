@@ -290,7 +290,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBehavior
   player: {fileID: 1999168909}
-  detector: {fileID: 0}
   rb: {fileID: 278123046}
 --- !u!1 &519420028
 GameObject:
@@ -718,7 +717,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 153613d86ee362a45a8fac1d33f6fa68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  rb: {fileID: 1999168910}
+  acceleration: 5
+  maxSpeed: 15
+  damping: 0.4
 --- !u!1 &2109014246
 GameObject:
   m_ObjectHideFlags: 0
