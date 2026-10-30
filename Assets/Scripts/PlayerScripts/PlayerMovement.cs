@@ -31,9 +31,10 @@ public class PlayerMovement : MonoBehaviour
 		}
         movementInput.Normalize();
 
-        // Rotation
-        Vector3 mousePos = Input.mousePosition;
-		Vector2 direction = mousePos - transform.position;
+		// Rotation
+		Vector3 mousePos = Input.mousePosition;
+		Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mousePos);
+		Vector2 direction = mouseWorld - transform.position;  
 		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 		transform.rotation = Quaternion.Euler(0, 0, angle);
 	}
