@@ -8,7 +8,6 @@ public class EnemySpawnScript : MonoBehaviour
     [SerializeField] GameObject [] enemies;
     [SerializeField] float spawnTimer;
     [SerializeField] int maxEnemies;
-    int numEnemies;
 
     private void Start()
     {
@@ -18,13 +17,15 @@ public class EnemySpawnScript : MonoBehaviour
     public int CheckEnemies()
     {
         int numEnemies = 0;
-
+        GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in activeEnemies)
+            numEnemies++;
         return numEnemies;
     }
 
     public void SpawnEnemy()
     {
-        if(numEnemies != maxEnemies)
+        if(CheckEnemies() < maxEnemies)
         {
             int i = Random.Range(0, enemies.Length);
             Instantiate(enemies[i]);
