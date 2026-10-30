@@ -8,9 +8,14 @@ public class EnemySpawnScript : MonoBehaviour
     [SerializeField] GameObject [] enemies;
     [SerializeField] float spawnTimer;
     [SerializeField] int maxEnemies;
+    private GameObject[] spawnPositions;
 
     private void Start()
     {
+        for (int i = 0; i < transform.childCount; ++i)
+        {
+            spawnPositions[i] = transform.GetChild(i).gameObject;
+        }
         SpawnEnemy();
     }
 
@@ -29,7 +34,8 @@ public class EnemySpawnScript : MonoBehaviour
         if(CheckEnemies() < maxEnemies)
         {
             int i = Random.Range(0, enemies.Length);
-            Instantiate(enemies[i]);
+            int j = Random.Range(0, spawnPositions.Length);
+            Instantiate(enemies[i], spawnPositions[j].transform);
         }
         StartCoroutine(SpawnTime());
     }    
