@@ -34,10 +34,10 @@ public class EnemyStats
         _pointsUsed = 0f;
 
         int numStats = (int)StatType.LAST;
-        float[] weights = new float[numStats]; // How much each stat is valued at (not the cost to buy it)
+        float[] weights = new float[numStats];  // How much each stat is valued at (not the cost to buy it)
         float[] capacity = new float[numStats]; // The maximum points possible for a stat
-        float[] budget = new float[numStats]; // How much can be spent on a stat
-        bool[] allStats = new bool[numStats]; // List of every stat
+        float[] budget = new float[numStats];   // How much can be spent on a stat
+        bool[] allStats = new bool[numStats];   // List of every stat
         bool[] floatStats = new bool[numStats]; // List of the float stats
 
         for (int i = 0; i < numStats; i++)
