@@ -48,7 +48,7 @@ public class EnemyBehavior : MonoBehaviour
         if (distanceValue > 4)
         {
             rb.AddForce(distance);
-            Debug.Log(distance);
+            //Debug.Log(distance);
         }
         if (distanceValue < 3)
         {

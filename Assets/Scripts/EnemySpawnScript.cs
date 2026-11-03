@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class EnemySpawnScript : MonoBehaviour
@@ -7,8 +6,14 @@ public class EnemySpawnScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] GameObject [] enemies;
     [SerializeField] float spawnTimer;
-    [SerializeField] int maxEnemies;
-    public GameObject[] spawnPositions;
+    [SerializeField] int maxEnemiesAtOnce;
+    [SerializeField] int maxEnemiesTotal;
+    private int enemiesSpawned = 0;
+    [SerializeField] float pointsAllocated;
+    private float pointsCurrentlyAllocated = 0;
+    [Tooltip("This determines how many points an enemy can vary away from Points Allocated / Max Enemies.")]
+    [SerializeField] float randomPointVariance;
+    [HideInInspector] public GameObject[] spawnPositions;
 
 	[Header("References")]
 	[SerializeField] Transform player;
@@ -29,20 +34,36 @@ public class EnemySpawnScript : MonoBehaviour
         GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in activeEnemies)
             numEnemies++;
-        Debug.Log(numEnemies);
+        Debug.Log(numEnemies + " this many enemies");
         return numEnemies;
     }
 
     public void SpawnEnemy()
     {
-        if(CheckEnemies() < maxEnemies)
+        if(CheckEnemies() < maxEnemiesAtOnce)
         {
             int i = Random.Range(0, enemies.Length);
             int j = Random.Range(0, spawnPositions.Length);
             Vector3 pos = spawnPositions[j].transform.position;
-            EnemyScript eScript = Instantiate(enemies[i], spawnPositions[j].transform.position, Quaternion.identity).GetComponent<EnemyScript>();
-            eScript.Init(player);
+
+            EnemyMovementScript eScript = Instantiate(enemies[i], spawnPositions[j].transform.position, Quaternion.identity).GetComponent<EnemyMovementScript>();
+            eScript.gameObject.name = $"Enemy{enemiesSpawned + 1}";
+
+            float pointsForEnemy = pointsAllocated / maxEnemiesTotal;
+            pointsForEnemy += Random.Range(-randomPointVariance, randomPointVariance);
+            pointsForEnemy = Mathf.Clamp(pointsForEnemy, (int)EnemyStatManager.StatType.LAST, pointsAllocated - (pointsCurrentlyAllocated + (maxEnemiesTotal - enemiesSpawned) * (int)EnemyStatManager.StatType.LAST));
+
+            enemiesSpawned++;
+            if (enemiesSpawned == maxEnemiesTotal)
+            {
+                pointsForEnemy = pointsAllocated - pointsCurrentlyAllocated;
+            }
+
+            pointsCurrentlyAllocated += pointsForEnemy;
+
+            eScript.Init(player, pointsForEnemy);
         }
+        if (enemiesSpawned >= maxEnemiesTotal) return;
         StartCoroutine(SpawnTime());
     }    
 
