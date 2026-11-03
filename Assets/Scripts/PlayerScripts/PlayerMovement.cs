@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
     Vector2 movementInput = Vector2.zero;
     Vector2 velocity = Vector2.zero;
     [SerializeField] float acceleration = 5;
-    [SerializeField] float maxSpeed = 20;
     [SerializeField] float damping = .8f;
 
     void Update()
