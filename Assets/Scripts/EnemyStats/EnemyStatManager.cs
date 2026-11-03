@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class EnemyStatManager
@@ -68,4 +69,15 @@ public static class EnemyStatManager
     public static StatFloat rotationStat = new StatFloat(StatType.RotationSpeed, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationSpeed + GlobalSeedOffset));
     public static StatFloat rotationAccelerationStat = new StatFloat(StatType.RotationAcceleration, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationAcceleration + GlobalSeedOffset));
     public static StatFloat scaleFactorStat = new StatFloat(StatType.Scale, 6, new Vector2(1.0f, 2.0f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Scale + GlobalSeedOffset));
+
+    public static Dictionary<StatType, Stat> statsByStatType = new()
+    {
+        { StatType.Health, healthStat },
+        { StatType.Damage, damageStat },
+        { StatType.MaxSpeed, speedStat },
+        { StatType.Acceleration, accelerationStat },
+        { StatType.RotationSpeed, rotationStat },
+        { StatType.RotationAcceleration, rotationAccelerationStat },
+        { StatType.Scale, scaleFactorStat }  
+    };
 }

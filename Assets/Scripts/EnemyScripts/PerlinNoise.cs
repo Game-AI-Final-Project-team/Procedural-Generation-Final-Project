@@ -5,6 +5,8 @@ public class PerlinNoise
     private int seed;
     private int pixWidth = 256;
     private int pixHeight = 256;
+    private float xOffset;
+    private float yOffset;
     private float scale = 1.0f;
 
     private float[,] noiseGrid;
@@ -34,15 +36,15 @@ public class PerlinNoise
     {
         System.Random rng = new System.Random(seed);
 
-        float xOrg = (float)(rng.NextDouble() * 1000.0);
-        float yOrg = (float)(rng.NextDouble() * 1000.0);
+        xOffset = (float)(rng.NextDouble() * 1000.0);
+        yOffset = (float)(rng.NextDouble() * 1000.0);
 
         for (int y = 0; y < pixHeight; y++)
         {
             for (int x = 0; x < pixWidth; x++)
             {
-                float xCoord = xOrg + (float)x / pixWidth * scale;
-                float yCoord = yOrg + (float)y / pixHeight * scale;
+                float xCoord = xOffset + (float)x / pixWidth * scale;
+                float yCoord = yOffset + (float)y / pixHeight * scale;
                 
                 noiseGrid[x, y] = Mathf.PerlinNoise(xCoord, yCoord);
             }
@@ -54,6 +56,21 @@ public class PerlinNoise
         x = ((x % pixWidth) + pixWidth) % pixWidth;
         y = ((y % pixHeight) + pixHeight) % pixHeight;
         return noiseGrid[x, y];
+    }
+
+    public Vector2Int GetDimensions()
+    {
+        return new Vector2Int(pixWidth, pixHeight);
+    }
+
+    public Vector2 GetOffset()
+    {
+        return new Vector2(xOffset, yOffset);
+    }
+
+    public float GetScale()
+    {
+        return scale;
     }
 
     public float GetNoiseValue(Vector2Int position) { return GetNoiseValue(position.x, position.y); }
