@@ -7,7 +7,7 @@ public class EnemySpawnScript : MonoBehaviour
     [SerializeField] GameObject [] enemies;
     [SerializeField] float spawnTimer;
     [SerializeField] int maxEnemiesAtOnce;
-    [SerializeField] int maxEnemiesTotal = 3;
+    [SerializeField] int maxEnemiesTotal;
     private int enemiesSpawned = 0;
     [SerializeField] float pointsAllocated;
     private float pointsCurrentlyAllocated = 0;
@@ -34,7 +34,7 @@ public class EnemySpawnScript : MonoBehaviour
         GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in activeEnemies)
             numEnemies++;
-        Debug.Log(numEnemies);
+        Debug.Log(numEnemies + " this many enemies");
         return numEnemies;
     }
 
