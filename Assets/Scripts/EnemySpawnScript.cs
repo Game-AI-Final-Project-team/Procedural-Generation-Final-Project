@@ -45,11 +45,13 @@ public class EnemySpawnScript : MonoBehaviour
             int i = Random.Range(0, enemies.Length);
             int j = Random.Range(0, spawnPositions.Length);
             Vector3 pos = spawnPositions[j].transform.position;
+
             EnemyMovementScript eScript = Instantiate(enemies[i], spawnPositions[j].transform.position, Quaternion.identity).GetComponent<EnemyMovementScript>();
+            eScript.gameObject.name = $"Enemy{enemiesSpawned + 1}";
 
             float pointsForEnemy = pointsAllocated / maxEnemiesTotal;
             pointsForEnemy += Random.Range(-randomPointVariance, randomPointVariance);
-            pointsForEnemy = Mathf.Clamp(pointsForEnemy, (maxEnemiesTotal - enemiesSpawned) * (int)EnemyStatManager.StatType.LAST, pointsAllocated - (pointsCurrentlyAllocated + (maxEnemiesTotal - enemiesSpawned) * (int)EnemyStatManager.StatType.LAST));
+            pointsForEnemy = Mathf.Clamp(pointsForEnemy, (int)EnemyStatManager.StatType.LAST, pointsAllocated - (pointsCurrentlyAllocated + (maxEnemiesTotal - enemiesSpawned) * (int)EnemyStatManager.StatType.LAST));
 
             enemiesSpawned++;
             if (enemiesSpawned == maxEnemiesTotal)

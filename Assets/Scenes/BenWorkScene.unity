@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 13.01
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -381,8 +381,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1999168912}
     - target: {fileID: 7008399798255849602, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
+      propertyPath: maxEnemiesTotal
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008399798255849602, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
       propertyPath: pointsAllocated
-      value: 100
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008399798255849602, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
+      propertyPath: maxEnemiesAtOnce
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7008399798255849602, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
       propertyPath: randomPointVariance
@@ -537,7 +545,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 9094309863073392079, guid: 7e4f00ab7d02526449748dcdd5fb9f63, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -737,7 +745,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 9094309863073392079, guid: 7e4f00ab7d02526449748dcdd5fb9f63, type: 3}
   m_Color: {r: 0.4669811, g: 0.69160765, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
