@@ -8,7 +8,7 @@ public class EnemySpawnScript : MonoBehaviour
     [SerializeField] GameObject [] enemies;
     [SerializeField] float spawnTimer;
     [SerializeField] int maxEnemies;
-    public GameObject[] spawnPositions;
+    [HideInInspector] public GameObject[] spawnPositions;
 
 	[Header("References")]
 	[SerializeField] Transform player;
