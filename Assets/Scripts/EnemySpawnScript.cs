@@ -45,7 +45,7 @@ public class EnemySpawnScript : MonoBehaviour
             int i = Random.Range(0, enemies.Length);
             int j = Random.Range(0, spawnPositions.Length);
             Vector3 pos = spawnPositions[j].transform.position;
-            EnemyScript eScript = Instantiate(enemies[i], spawnPositions[j].transform.position, Quaternion.identity).GetComponent<EnemyScript>();
+            EnemyMovementScript eScript = Instantiate(enemies[i], spawnPositions[j].transform.position, Quaternion.identity).GetComponent<EnemyMovementScript>();
 
             float pointsForEnemy = pointsAllocated / maxEnemiesTotal;
             pointsForEnemy += Random.Range(-randomPointVariance, randomPointVariance);
