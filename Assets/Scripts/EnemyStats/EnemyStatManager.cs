@@ -2,18 +2,69 @@ using UnityEngine;
 
 public static class EnemyStatManager
 {
-    public static readonly float HealthCostPerStat = 1;
-    public static readonly Vector2Int HealthStatRange = new Vector2Int(1, int.MaxValue);
-    public static readonly float DamageCostPerStat = 1;
-    public static readonly Vector2 DamageRange = new Vector2(0, float.MaxValue);
-    public static readonly float MaxSpeedCostPerStat = 1;
-    public static readonly Vector2 MaxSpeedRange = new Vector2(0, float.MaxValue);
-    public static readonly float AccelerationCostPerStat = 1;
-    public static readonly Vector2 AccelerationRange = new Vector2(0, float.MaxValue);
-    public static readonly float RotationalCostPerStat = 1;
-    public static readonly Vector2 RotationalRange = new Vector2(0, float.MaxValue);
-    public static readonly float RotationalAccelerationCostPerStat = 1;
-    public static readonly Vector2 RotationalAccelerationRange = new Vector2(0, float.MaxValue);
-    public static readonly float ScaleFactorCostPerStat = 1;
-    public static readonly Vector2 ScaleFactorRange = new Vector2(0, float.MaxValue);
+    public abstract class Stat
+    {
+        public Stat(StatType statType, float cost, Vector2 statRange, PerlinNoise noise)
+        {
+            costPerStat = cost;
+            statValueRange = statRange;
+            this.statType = statType;
+            perlinNoise = noise;
+        }
+        public Stat(Stat copy)
+        {
+            costPerStat = copy.costPerStat;
+            statValueRange = copy.statValueRange;
+            statType = copy.statType;
+            perlinNoise = new PerlinNoise(copy.perlinNoise);
+        }
+        public Vector2 statValueRange;
+        public float costPerStat;
+        public StatType statType;
+        public PerlinNoise perlinNoise;
+    }
+
+    public class StatInt : Stat
+    {
+        public StatInt(StatType statType, float cost, Vector2 statRange, PerlinNoise noise) : base(statType, cost, statRange, noise) { }
+        public StatInt(StatInt statInt) : base(statInt.statType, statInt.costPerStat, statInt.statValueRange, statInt.perlinNoise)
+        {
+            statValue = statInt.statValue;
+        }
+        public int statValue;
+    }
+
+    public class StatFloat : Stat
+    {
+        public StatFloat(StatType statType, float cost, Vector2 statRange, PerlinNoise noise) : base(statType, cost, statRange, noise) { }
+        public StatFloat(StatFloat statFloat) : base(statFloat.statType, statFloat.costPerStat, statFloat.statValueRange, statFloat.perlinNoise)
+        {
+            statValue = statFloat.statValue;
+        }
+        public float statValue;
+    }
+
+    public enum StatType
+    {
+        Health,
+        Damage,
+        MaxSpeed,
+        Acceleration,
+        RotationSpeed,
+        RotationAcceleration,
+        Scale,
+        LAST,
+    }
+
+    static readonly int NoiseWidth = 256;
+    static readonly int NoiseHeight = 256;
+    static readonly float NoiseScale = 20.0f;
+
+    public static StatInt healthStat = new StatInt(StatType.Health, 1, new Vector2Int(1, int.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Health));
+    public static StatFloat damageStat = new StatFloat(StatType.Damage, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Damage));
+    public static StatFloat speedStat = new StatFloat(StatType.MaxSpeed, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.MaxSpeed));
+    public static StatFloat accelerationStat = new StatFloat(StatType.Acceleration, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Acceleration));
+    public static StatFloat rotationStat = new StatFloat(StatType.RotationSpeed, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationSpeed));
+    public static StatFloat rotationAccelerationStat = new StatFloat(StatType.RotationAcceleration, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationAcceleration));
+    public static StatFloat scaleFactorStat = new StatFloat(StatType.Scale, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Scale));
 }

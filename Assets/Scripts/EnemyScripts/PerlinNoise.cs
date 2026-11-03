@@ -1,31 +1,41 @@
 using UnityEngine;
 
-public class PerlinNoise : MonoBehaviour 
+public class PerlinNoise 
 {
-    public int seed;
-    [Header("Noise Settings")]
-    public int pixWidth = 256;
-    public int pixHeight = 256;
-    public float scale = 1.0f;
-    public Vector2Int debugSample;
+    private int seed;
+    private int pixWidth = 256;
+    private int pixHeight = 256;
+    private float scale = 1.0f;
 
     private float[,] noiseGrid;
 
-    void Awake()
+    public PerlinNoise(int width, int height, float scale, int seed)
     {
-        if (pixWidth <= 0) pixWidth = 256;
-        if (pixHeight <= 256) pixHeight = 256;
+        pixWidth = width;
+        pixHeight = height;
+        this.scale = scale;
+        this.seed = seed;
 
         noiseGrid = new float[pixWidth, pixHeight];
-        Random.InitState(seed);
-
         GenerateNoiseData();
+    }
+
+    public PerlinNoise(PerlinNoise copy)
+    {
+        pixWidth = copy.pixWidth;
+        pixHeight = copy.pixHeight;
+        scale = copy.scale;
+        seed = copy.seed;
+
+        noiseGrid = (float[,])copy.noiseGrid.Clone();
     }
 
     void GenerateNoiseData()
     {
-        float xOrg = Random.Range(0f, 1000f);
-        float yOrg = Random.Range(0f, 1000f);
+        System.Random rng = new System.Random(seed);
+
+        float xOrg = (float)(rng.NextDouble() * 1000.0);
+        float yOrg = (float)(rng.NextDouble() * 1000.0);
 
         for (int y = 0; y < pixHeight; y++)
         {
@@ -41,18 +51,10 @@ public class PerlinNoise : MonoBehaviour
 
     public float GetNoiseValue(int x, int y)
     {
-        if (x >= 0 && x < pixWidth && y >= 0 && y < pixHeight)
-        {
-            return noiseGrid[x, y];
-        }
-        
-        Debug.LogWarning("Sample coordinates out of bounds!");
-        return 0f;
+        x = ((x % pixWidth) + pixWidth) % pixWidth;
+        y = ((y % pixHeight) + pixHeight) % pixHeight;
+        return noiseGrid[x, y];
     }
 
-    [ContextMenu("Get Debug Sample")]
-    public void DebugSample()
-    {
-        Debug.Log($"Value at ({debugSample.x}, {debugSample.y}): {GetNoiseValue(debugSample.x, debugSample.y)}");
-    }
+    public float GetNoiseValue(Vector2Int position) { return GetNoiseValue(position.x, position.y); }
 }

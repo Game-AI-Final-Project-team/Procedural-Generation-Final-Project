@@ -119,55 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &382108186
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 382108188}
-  - component: {fileID: 382108189}
-  m_Layer: 0
-  m_Name: PerlinNoiseGenerator1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &382108188
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 382108186}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &382108189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 382108186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7084fc1beeae7248896697ce70d6ab5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PerlinNoise
-  seed: 0
-  pixWidth: 256
-  pixHeight: 256
-  scale: 17.1
-  debugSample: {x: 0, y: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,6 +381,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1999168912}
     - target: {fileID: 7008399798255849602, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
+      propertyPath: pointsAllocated
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008399798255849602, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
+      propertyPath: randomPointVariance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008399798255849602, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
       propertyPath: spawnPositions.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -482,55 +441,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 096b32a723cc7a848a26857be6c9fc42, type: 3}
---- !u!1 &1324409788
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1324409790}
-  - component: {fileID: 1324409789}
-  m_Layer: 0
-  m_Name: PerlinNoiseGenerator3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1324409789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1324409788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7084fc1beeae7248896697ce70d6ab5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PerlinNoise
-  seed: 31234234
-  pixWidth: 256
-  pixHeight: 256
-  scale: 17.1
-  debugSample: {x: 0, y: 0}
---- !u!4 &1324409790
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1324409788}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1999168909
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,104 +624,6 @@ MonoBehaviour:
   acceleration: 5
   maxSpeed: 20
   damping: 0.8
---- !u!1 &2049947369
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2049947371}
-  - component: {fileID: 2049947370}
-  m_Layer: 0
-  m_Name: PerlinNoiseGenerator4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2049947370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049947369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7084fc1beeae7248896697ce70d6ab5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PerlinNoise
-  seed: 4235363
-  pixWidth: 256
-  pixHeight: 256
-  scale: 17.1
-  debugSample: {x: 0, y: 0}
---- !u!4 &2049947371
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049947369}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2070619977
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2070619979}
-  - component: {fileID: 2070619978}
-  m_Layer: 0
-  m_Name: PerlinNoiseGenerator2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2070619978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2070619977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7084fc1beeae7248896697ce70d6ab5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PerlinNoise
-  seed: 139678
-  pixWidth: 256
-  pixHeight: 256
-  scale: 17.1
-  debugSample: {x: 0, y: 0}
---- !u!4 &2070619979
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2070619977}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109014246
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,7 +772,3 @@ SceneRoots:
   - {fileID: 1999168912}
   - {fileID: 2109014249}
   - {fileID: 882707585}
-  - {fileID: 382108188}
-  - {fileID: 2070619979}
-  - {fileID: 1324409790}
-  - {fileID: 2049947371}

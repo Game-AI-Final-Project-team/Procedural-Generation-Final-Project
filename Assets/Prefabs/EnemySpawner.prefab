@@ -113,7 +113,12 @@ MonoBehaviour:
   enemies:
   - {fileID: 7136507707259271573, guid: 8efd828ead0b858419de91634ea312dd, type: 3}
   spawnTimer: 1
-  maxEnemies: 3
+  maxEnemiesAtOnce: 3
+  maxEnemiesTotal: 3
+  pointsAllocated: 100
+  randomPointVariance: 20
+  spawnPositions: []
+  player: {fileID: 0}
 --- !u!1 &7891780729735403424
 GameObject:
   m_ObjectHideFlags: 0
