@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 9094309863073392079, guid: 7e4f00ab7d02526449748dcdd5fb9f63, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -170,6 +170,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7295ef77b609245931b9af9dafc3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyScript
-  acceleration: 3
-  maxSpeed: 10
-  damping: 0.4

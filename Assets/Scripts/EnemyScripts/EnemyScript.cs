@@ -1,5 +1,6 @@
 using System.Drawing;
 using UnityEngine;
+using static EnemyStatManager;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class EnemyScript : MonoBehaviour
 	[Header("Stats")]
 	Vector2 movementInput = Vector2.zero;
 	Vector2 velocity = Vector2.zero;
-	[SerializeField] float acceleration = 5;
-	[SerializeField] float maxSpeed = 20;
-	[SerializeField] float damping = .8f;
+	float acceleration;
+	float maxSpeed;
+	float damping = .8f;
 
 	private EnemyStats enemyStats = new EnemyStats();
 
@@ -20,6 +21,18 @@ public class EnemyScript : MonoBehaviour
 		target = toTrack;
 		Vector2Int position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
 		enemyStats.Initialize(points, position);
+		enemyStats.PrintStats();
+		ApplyStats();
+	}
+
+	private void ApplyStats()
+	{
+		StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
+		float scale = scaleStat.statValue;
+		transform.localScale = new Vector3(scale, scale, scale);
+
+		maxSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
+		acceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
 	}
 
 	private void FixedUpdate()
@@ -29,6 +42,10 @@ public class EnemyScript : MonoBehaviour
 		// Movement
 		velocity *= damping;
 		velocity += movementInput * acceleration * Time.fixedDeltaTime;
+
+		Vector2 normalizedVelocity = velocity.normalized;
+		if (velocity.magnitude > maxSpeed) { velocity = normalizedVelocity * maxSpeed; }
+
 		transform.position += (Vector3)velocity;
 	}
 }
