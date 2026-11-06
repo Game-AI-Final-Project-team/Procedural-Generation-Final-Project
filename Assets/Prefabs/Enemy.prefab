@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2697622807154529059}
   - component: {fileID: 7477002725331624270}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DirectionPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 9125140229789921480}
   - component: {fileID: 327651842557627068}
   - component: {fileID: 1643262520621547191}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &327651842557627068
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -231,7 +231,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -263,3 +263,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3494bb1e49eb44a92d07266fd98dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementScript
+  rb: {fileID: 9125140229789921480}
+  wallRadius: 2.5
+  avTotal: 0
+  wall:
+    serializedVersion: 2
+    m_Bits: 64
+  enemy:
+    serializedVersion: 2
+    m_Bits: 128
