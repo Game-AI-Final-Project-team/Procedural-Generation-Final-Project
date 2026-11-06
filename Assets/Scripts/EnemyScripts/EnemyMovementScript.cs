@@ -26,7 +26,7 @@ public class EnemyMovementScript : MonoBehaviour
 		target = toTrack;
 		Vector2Int position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
 		enemyStats.Initialize(points, position);
-		enemyStats.PrintStats();
+		//enemyStats.PrintStats();
 		ApplyStats();
 	}
 
