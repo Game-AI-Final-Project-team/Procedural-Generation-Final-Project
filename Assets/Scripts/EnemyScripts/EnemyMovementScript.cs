@@ -35,6 +35,7 @@ public class EnemyMovementScript : MonoBehaviour
 
     public void Init(Transform toTrack, float points)
 	{
+        wallRadius = transform.localScale.x * wallRadius;
         avTotal = rotationVelocity;
         target = toTrack;
 		Vector2Int position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
@@ -123,9 +124,9 @@ public class EnemyMovementScript : MonoBehaviour
                     (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 3.5f + new Vector2(transform.position.x, transform.position.y), Color.red);
 
 
-        if (hitDest && hitDest.collider.gameObject.CompareTag("Wall"))
+        if (hitDest && (hitDest.collider.gameObject.CompareTag("Wall")))
         {
-            if (hitCurrent && hitCurrent.collider.gameObject.CompareTag("Wall"))
+            if (hitCurrent && (hitCurrent.collider.gameObject.CompareTag("Wall")))
             {
                 if (rotationVelocity < maxRotationSpeed)
                 {
@@ -156,11 +157,9 @@ public class EnemyMovementScript : MonoBehaviour
         }
 
 
-
-
         distance = (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate))).normalized;
 
-        if (distanceValue > 3)
+        if (distanceValue > 5)
         {
             velocity *= damping;
             if (linearAcceleration < maxLinearSpeed)
@@ -173,17 +172,18 @@ public class EnemyMovementScript : MonoBehaviour
             }
             rb.AddForce(velocity);
         }
-        if (distanceValue < 1)
+        if (distanceValue < 3)
         {
             velocity *= damping;
             if (linearAcceleration < maxLinearSpeed)
             {
-                velocity += -distance * linearAcceleration * Time.fixedDeltaTime *1000;
+                velocity += -distance * linearAcceleration * Time.fixedDeltaTime *1300;
             }
             else
             {
-                velocity += -distance * Time.fixedDeltaTime * 1000;
+                velocity += -distance * Time.fixedDeltaTime * 1300;
             }
+            
             rb.AddForce(velocity);
         }
 
@@ -194,12 +194,17 @@ public class EnemyMovementScript : MonoBehaviour
         if (circle && circle.collider.CompareTag("Wall"))
         {
             
-            rb.AddForce((transform.position - circle.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 150);
+            rb.AddForce((transform.position - circle.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 2000 * Time.fixedDeltaTime);
         }
         
         if (circle2 && circle2.collider.CompareTag("Enemy"))
         {
-            rb.AddForce((transform.position - circle2.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 100 );
+            if (circle2.collider.GetComponent<Transform>().position != transform.position)
+            {
+                float enDistance = ((2 / (transform.position - circle2.collider.GetComponent<Transform>().position).magnitude) + 1) * 3;
+                rb.AddForce(((transform.position - circle2.collider.GetComponent<Transform>().position) * enDistance) * linearAcceleration * 1000 * Time.fixedDeltaTime);
+            }
+            
         }
     }
 
