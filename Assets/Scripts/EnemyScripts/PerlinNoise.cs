@@ -48,15 +48,19 @@ public class PerlinNoise
                 float xCoord = xOffset + (float)x / pixWidth * scale;
                 float yCoord = yOffset + (float)y / pixHeight * scale;
                 
-                noiseGrid[x, y] = Mathf.PerlinNoise(xCoord, yCoord);
+                float noiseValue = Mathf.PerlinNoise(xCoord, yCoord) +
+                                    0.5f * Mathf.PerlinNoise(2 * xCoord, 2 * yCoord) +
+                                    0.25f * Mathf.PerlinNoise(4 * xCoord, 4 * yCoord);
+                noiseGrid[x, y] = noiseValue / 1.75f;
+                
             }
         }
     }
 
     public float GetNoiseValue(int x, int y)
     {
-        x = ((x % pixWidth) + pixWidth) % pixWidth;
-        y = ((y % pixHeight) + pixHeight) % pixHeight;
+        x = ((x % pixWidth) + pixWidth + OffsetX) % pixWidth;
+        y = ((y % pixHeight) + pixHeight + OffsetY) % pixHeight;
         return noiseGrid[x, y];
     }
 
