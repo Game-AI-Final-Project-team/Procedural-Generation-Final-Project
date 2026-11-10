@@ -3,10 +3,10 @@ using UnityEngine;
 public class PerlinNoise 
 {
     private int seed;
-    private int pixWidth = 256;
-    private int pixHeight = 256;
-    private int OffsetX => pixWidth / 2;
-    private int OffsetY => pixHeight / 2;
+    private int pixWidth;
+    private int pixHeight;
+    private int OffsetX => 0;//pixWidth / 2;
+    private int OffsetY => 0;//pixHeight / 2;
     private float xOffset;
     private float yOffset;
     private float scale = 1.0f;
