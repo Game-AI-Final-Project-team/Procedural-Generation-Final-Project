@@ -60,7 +60,7 @@ public static class EnemyStatManager
     static readonly int NoiseWidth = 256;
     static readonly int NoiseHeight = 256;
     static readonly float NoiseScale = 20.0f;
-    static readonly int GlobalSeedOffset = 10;
+    static readonly int GlobalSeedOffset = 20;
 
     public static StatInt healthStat = new StatInt(StatType.Health, 0.1f, new Vector2Int(1, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Health + GlobalSeedOffset));
     public static StatInt damageStat = new StatInt(StatType.Damage, 0.1f, new Vector2Int(0, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Damage + GlobalSeedOffset));
