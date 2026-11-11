@@ -56,45 +56,7 @@ public class EnemyMovementScript : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-        /*
-		Vector3 targetPos = target.position;
 
-		// Movement
-		movementInput = (targetPos - transform.position).normalized;
-
-		velocity *= damping;
-		velocity += movementInput * linearAcceleration * Time.fixedDeltaTime;
-
-		Vector2 normalizedVelocity = velocity.normalized;
-		if (velocity.magnitude > maxLinearSpeed) { velocity = normalizedVelocity * maxLinearSpeed; }
-
-		transform.position += (Vector3)velocity;
-
-		// Rotation
-		Vector2 direction = targetPos - transform.position;
-
-		
-		double targetAngle = Math.Atan2(direction.y, direction.x) * 180.0 / Math.PI;
-		double diff = DeltaAngle(transform.eulerAngles.z, targetAngle);
-
-		if (Math.Abs(diff) > 0.5)
-		{
-			if (diff > 0)
-			{
-				if (rotationVelocity < 0) rotationVelocity = 0;
-				rotationVelocity += rotationAcceleration * Time.fixedDeltaTime;
-			}
-			else
-			{
-				if (rotationVelocity > 0) rotationVelocity = 0;
-				rotationVelocity -= rotationAcceleration * Time.fixedDeltaTime;
-			}
-		}
-
-		if (Math.Abs(rotationVelocity) > maxRotationSpeed)
-			rotationVelocity = Math.Sign(rotationVelocity) * maxRotationSpeed;
-
-		transform.Rotate(0, 0, rotationVelocity);*/
 
         distance = (target.position - transform.position);
         if (avTotal != 0)
@@ -111,22 +73,22 @@ public class EnemyMovementScript : MonoBehaviour
         fixRotation();
 
         float distanceValue = distance.magnitude;
-        RaycastHit2D hitCurrent = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 0.5f,
-                    (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 4 + new Vector2(transform.position.x, transform.position.y), wall);
+        RaycastHit2D hitCurrent = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x/1.5f),
+                    (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 4 + new Vector2(transform.position.x, transform.position.y));
 
-        RaycastHit2D hitDest = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 0.5f,
-                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 3.5f + new Vector2(transform.position.x, transform.position.y), wall);
+        RaycastHit2D hitDest = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x/1.5f),
+                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 3.5f + new Vector2(transform.position.x, transform.position.y));
 
-        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 0.5f,
+        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x/1.5f),
                     (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 4 + new Vector2(transform.position.x, transform.position.y), Color.yellow);
 
-        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 0.5f,
+        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x/1.5f),
                     (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 3.5f + new Vector2(transform.position.x, transform.position.y), Color.red);
 
 
-        if (hitDest && (hitDest.collider.gameObject.CompareTag("Wall")))
+        if (hitDest && ((hitDest.collider.gameObject.CompareTag("Wall")) || (hitDest.collider.gameObject.CompareTag("Enemy"))))
         {
-            if (hitCurrent && (hitCurrent.collider.gameObject.CompareTag("Wall")))
+            if (hitCurrent && ((hitCurrent.collider.gameObject.CompareTag("Wall")) || (hitCurrent.collider.gameObject.CompareTag("Enemy"))))
             {
                 if (rotationVelocity < maxRotationSpeed)
                 {
@@ -159,7 +121,7 @@ public class EnemyMovementScript : MonoBehaviour
 
         distance = (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate))).normalized;
 
-        if (distanceValue > 5)
+        if (distanceValue > 6)
         {
             velocity *= damping;
             if (linearAcceleration < maxLinearSpeed)

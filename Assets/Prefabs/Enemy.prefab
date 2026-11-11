@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementScript
   rb: {fileID: 9125140229789921480}
-  wallRadius: 1.5
+  wallRadius: 1.1
   avTotal: 0
   wall:
     serializedVersion: 2
