@@ -67,6 +67,18 @@ public class EnemySpawnScript : MonoBehaviour
         StartCoroutine(SpawnTime());
     }    
 
+    [ContextMenu("Spawn Debug Enemy")]
+    public void SpawnDebugEnemy()
+    {
+        EnemyMovementScript eScript = Instantiate(enemies[0], player.transform.position, Quaternion.identity).GetComponent<EnemyMovementScript>();
+        eScript.gameObject.name = $"Debug Enemy";
+
+        float pointsForEnemy = 100;
+
+        eScript.Init(player, pointsForEnemy);
+        eScript.enemyStats.PrintStats();
+    }
+
     IEnumerator SpawnTime()
     {
         yield return new WaitForSeconds(spawnTimer);

@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class MeshGeneration : MonoBehaviour
 {
-    private readonly float xSpacing = 1.0f;
-    private Vector2Int _dimensions;
+    [SerializeField] Vector2Int _dimensions;
+    [SerializeField] EnemyStatManager.StatType _statType;
+    private Vector2 _offset;
     Color32 NoiseColor(float value)
     {
         value *= 255;
@@ -12,17 +13,25 @@ public class MeshGeneration : MonoBehaviour
         return new Color32((byte)value, (byte)value, (byte)value, (byte)value);
     }
 
+    Color32 TerrainNoiseColor(float value)
+    {
+        float hue = 1f - (value * 1f);
+        Color32 color = Color.HSVToRGB(hue, 0.7f, 0.5f);
+        return color;
+    }
+
     [ContextMenu("Generate Debug Mesh")]
     public void DebugGenerateHealthMesh()
     {
-        GenerateMesh(EnemyStatManager.healthStat.perlinNoise);
+        GenerateMesh(EnemyStatManager.statsByStatType[_statType].perlinNoise);
     }
+    
     public void GenerateMesh(PerlinNoise noise)
     {
         Mesh mesh = new Mesh();
-        mesh.name = "noiseMesh";
+        mesh.name = "Noise Mesh";
 
-        _dimensions = noise.GetDimensions();
+        _offset = _dimensions / 2;
         int width = _dimensions.x;
         int height = _dimensions.y;
         int rows = _dimensions.x + 1;
@@ -36,9 +45,11 @@ public class MeshGeneration : MonoBehaviour
         {
             for (int y = 0; y < columns; y++)
             {
-                float noiseVal = noise.GetNoiseValue(x, y);
-                vertices[i] = new Vector3(x, y, noiseVal * 3);
-                colors[i] = NoiseColor(noiseVal);
+                int xPosition = x - (int)_offset.x;
+                int yPosition = y - (int)_offset.y;
+                float noiseVal = noise.GetNoiseValue(xPosition, yPosition);
+                vertices[i] = new Vector3(xPosition, yPosition, noiseVal * 3);
+                colors[i] = TerrainNoiseColor(noiseVal);
                 i++;
             }
         }

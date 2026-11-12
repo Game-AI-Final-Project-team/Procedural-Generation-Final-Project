@@ -19,7 +19,7 @@ public class EnemyMovementScript : MonoBehaviour
 	float maxRotationSpeed = 5;
 
 
-	private EnemyStats enemyStats = new EnemyStats();
+	[HideInInspector] public EnemyStats enemyStats = new EnemyStats();
 
     public Rigidbody2D rb;
 
