@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         velocity *= damping;
         velocity += movementInput * acceleration * Time.fixedDeltaTime;
         transform.position += (Vector3)velocity;
-        if (debugStatType != EnemyStatManager.StatType.LAST)
-            Debug.Log(EnemyStatManager.statsByStatType[debugStatType].perlinNoise.GetNoiseValue((int)transform.position.x, (int)transform.position.y).ToString("F2"));
+        // if (debugStatType != EnemyStatManager.StatType.LAST)
+        //     Debug.Log(EnemyStatManager.statsByStatType[debugStatType].perlinNoise.GetNoiseValue((int)transform.position.x, (int)transform.position.y).ToString("F2"));
 	}
 }

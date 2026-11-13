@@ -21,7 +21,7 @@ public class EnemyStats
     private float _enemyPointsGiven = 0;
     private float _pointsUsed = 0;
 
-    private readonly float Contrast = 2.0f;
+    private readonly float Contrast = 3.0f;
     private const float Epsilon = 0.0001f;
 
     public void Initialize(float points, Vector2Int position)

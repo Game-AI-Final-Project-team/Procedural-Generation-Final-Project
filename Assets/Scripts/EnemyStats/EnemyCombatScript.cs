@@ -1,9 +1,12 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using static EnemyStatManager;
 
 public class EnemyCombatScript : MonoBehaviour, IHasHealth
 {
+    [Header("UI")]
+    [SerializeField] TextMeshPro healthText;
     [Header("Shooting")]
     [SerializeField] GameObject fireballPrefab;
     [SerializeField] float fireRate = 10f;
@@ -24,6 +27,7 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
 
         maxHealth = ((StatInt)stats.GetStat(StatType.Health)).statValue;
         currentHealth = maxHealth;
+        healthText.text = $"{currentHealth}";
 
         damage = ((StatInt)stats.GetStat(StatType.Damage)).statValue;
     }
@@ -61,6 +65,9 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
         if (currentHealth <= 0) return;
 
         currentHealth = Mathf.Max(currentHealth - damage, 0);
+        
+        healthText.text = $"{currentHealth}";
+        
         if (currentHealth == 0)
             Die();
     }
