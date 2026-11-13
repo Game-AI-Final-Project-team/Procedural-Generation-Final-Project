@@ -265,6 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementScript
   rb: {fileID: 9125140229789921480}
+  player: {fileID: 0}
   wallRadius: 1.1
   avTotal: 0
   wall:
@@ -285,3 +286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8987cbf41134e7347a4640eda01f3ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombatScript
+  fireballPrefab: {fileID: 1156866878527526653, guid: 16cc0dcc7b5e360408565613eee47a34, type: 3}
+  fireRate: 5
+  range: 10

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class FireballScript : MonoBehaviour
@@ -32,4 +33,15 @@ public class FireballScript : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
+
+    private void Start()
+    {
+        StartCoroutine(Lifetime());
+    }
+
+    IEnumerator Lifetime()
+    {
+        yield return new WaitForSeconds(3);
+        KillProjectile();
+    }
 }

@@ -22,6 +22,7 @@ public class EnemyMovementScript : MonoBehaviour
 	[HideInInspector] public EnemyStats enemyStats = new EnemyStats();
 
     public Rigidbody2D rb;
+    public GameObject player;
 
     float rotate = 0.0f;
     float destRotate = 0.0f;
@@ -40,9 +41,11 @@ public class EnemyMovementScript : MonoBehaviour
         target = toTrack;
 		Vector2Int position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
 		enemyStats.Initialize(points, position);
-		//enemyStats.PrintStats();
-		ApplyStats();
-	}
+        player = GameObject.FindWithTag("Player");
+        //enemyStats.PrintStats();
+        ApplyStats();
+        GetComponent<EnemyCombatScript>().Setup(player.transform, enemyStats);
+    }
 
 	private void ApplyStats()
 	{
