@@ -4,6 +4,7 @@ using UnityEngine;
 public class MeshGeneration : MonoBehaviour
 {
     [SerializeField] Vector2Int _dimensions;
+    [SerializeField] bool terrain;
     [SerializeField] EnemyStatManager.StatType _statType;
     private Vector2 _offset;
     Color32 NoiseColor(float value)
@@ -13,23 +14,53 @@ public class MeshGeneration : MonoBehaviour
         return new Color32((byte)value, (byte)value, (byte)value, (byte)value);
     }
 
-    Color32 TerrainNoiseColor(float value)
+    static readonly (float height, Color32 color)[] terrainBands =
+    {
+        (0.00f, new Color32( 15,  40, 110, 255)), // deep water
+        (0.30f, new Color32( 30,  90, 170, 255)), // shallow water
+        (0.40f, new Color32( 70, 150, 200, 255)), // shoreline water
+        (0.42f, new Color32(210, 195, 140, 255)), // sand
+        (0.48f, new Color32( 90, 150,  60, 255)), // grass
+        (0.60f, new Color32( 40, 100,  40, 255)), // forest
+        (0.72f, new Color32(110,  95,  80, 255)), // rock / dirt
+        (0.85f, new Color32(140, 135, 130, 255)), // high rock
+        (0.92f, new Color32(245, 245, 250, 255)), // snow
+    };
+
+    Color32 HeatNoiseColor(float value)
     {
         float hue = 1f - (value * 1f);
         Color32 color = Color.HSVToRGB(hue, 0.7f, 0.5f);
         return color;
     }
 
-    [ContextMenu("Generate Debug Mesh")]
-    public void DebugGenerateHealthMesh()
+    Color32 TerrainNoiseColor(float value)
     {
-        GenerateMesh(EnemyStatManager.statsByStatType[_statType].perlinNoise);
+        value = Mathf.Clamp01(value);
+
+        for (int i = 0; i < terrainBands.Length - 1; i++)
+        {
+            var a = terrainBands[i];
+            var b = terrainBands[i + 1];
+            if (value <= b.height)
+            {
+                float t = Mathf.InverseLerp(a.height, b.height, value);
+                return Color32.Lerp(a.color, b.color, t);
+            }
+        }
+        return terrainBands[terrainBands.Length - 1].color;
+    }
+
+    public void Awake()
+    {
+        if (terrain) GenerateMesh(EnemyStatManager.terrain);
+        else GenerateMesh(EnemyStatManager.statsByStatType[_statType].perlinNoise);
     }
     
     public void GenerateMesh(PerlinNoise noise)
     {
         Mesh mesh = new Mesh();
-        mesh.name = "Noise Mesh";
+        mesh.name = $"Noise Mesh";
 
         _offset = _dimensions / 2;
         int width = _dimensions.x;
@@ -49,7 +80,7 @@ public class MeshGeneration : MonoBehaviour
                 int yPosition = y - (int)_offset.y;
                 float noiseVal = noise.GetNoiseValue(xPosition, yPosition);
                 vertices[i] = new Vector3(xPosition, yPosition, noiseVal * 3);
-                colors[i] = TerrainNoiseColor(noiseVal);
+                colors[i] = terrain ? TerrainNoiseColor(noiseVal) : HeatNoiseColor(noiseVal);
                 i++;
             }
         }

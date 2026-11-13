@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using static EnemyStatManager;
 
+[Serializable]
 public class EnemyStats
 {
     private Dictionary<StatType, Stat> stats = new()

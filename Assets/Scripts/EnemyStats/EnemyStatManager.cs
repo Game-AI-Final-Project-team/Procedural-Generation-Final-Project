@@ -57,10 +57,23 @@ public static class EnemyStatManager
         LAST,
     }
 
+    public static Dictionary<StatType, string> statsToReadableString = new()
+    {
+        { StatType.Health, "Health" },  
+        { StatType.Damage, "Damage" },  
+        { StatType.MaxSpeed, "Speed" },  
+        { StatType.Acceleration, "Acceleration" },  
+        { StatType.RotationSpeed, "Turning Speed" },  
+        { StatType.RotationAcceleration, "Turning Acceleration" },  
+        { StatType.Scale, "Scale" },  
+    };
+
     static readonly int NoiseWidth = 1024;
     static readonly int NoiseHeight = 1024;
     static readonly float NoiseScale = 10.0f;
     static readonly int GlobalSeedOffset = 20;
+
+    public static PerlinNoise terrain = new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, GlobalSeedOffset - 1);
 
     public static StatInt healthStat = new StatInt(StatType.Health, 0.1f, new Vector2Int(1, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Health + GlobalSeedOffset));
     public static StatInt damageStat = new StatInt(StatType.Damage, 0.1f, new Vector2Int(0, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Damage + GlobalSeedOffset));
@@ -68,7 +81,7 @@ public static class EnemyStatManager
     public static StatFloat accelerationStat = new StatFloat(StatType.Acceleration, 7, new Vector2(1.0f, 2.0f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Acceleration + GlobalSeedOffset));
     public static StatFloat rotationStat = new StatFloat(StatType.RotationSpeed, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationSpeed + GlobalSeedOffset));
     public static StatFloat rotationAccelerationStat = new StatFloat(StatType.RotationAcceleration, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationAcceleration + GlobalSeedOffset));
-    public static StatFloat scaleFactorStat = new StatFloat(StatType.Scale, 6, new Vector2(1.0f, 2.0f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Scale + GlobalSeedOffset));
+    public static StatFloat scaleFactorStat = new StatFloat(StatType.Scale, 20, new Vector2(1.0f, 3.0f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Scale + GlobalSeedOffset));
 
     public static Dictionary<StatType, Stat> statsByStatType = new()
     {
