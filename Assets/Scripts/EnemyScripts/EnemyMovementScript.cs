@@ -59,7 +59,7 @@ public class EnemyMovementScript : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-
+        if (target == null) return;
 
         distance = (target.position - transform.position);
         if (avTotal != 0)

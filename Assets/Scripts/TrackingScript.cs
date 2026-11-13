@@ -6,6 +6,7 @@ public class TrackingScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
+		if (trans == null) return;
 		transform.position = trans.position;
 		transform.position = new Vector3(transform.position.x, transform.position.y, -10);
 	}

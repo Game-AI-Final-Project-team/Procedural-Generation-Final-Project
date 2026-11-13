@@ -76,7 +76,7 @@ public static class EnemyStatManager
     public static PerlinNoise terrain = new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, GlobalSeedOffset - 1);
 
     public static StatInt healthStat = new StatInt(StatType.Health, 0.5f, new Vector2Int(1, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Health + GlobalSeedOffset));
-    public static StatInt damageStat = new StatInt(StatType.Damage, 0.5f, new Vector2Int(0, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Damage + GlobalSeedOffset));
+    public static StatInt damageStat = new StatInt(StatType.Damage, 0.35f, new Vector2Int(0, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Damage + GlobalSeedOffset));
     public static StatFloat speedStat = new StatFloat(StatType.MaxSpeed, 15, new Vector2(0, 0.5f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.MaxSpeed + GlobalSeedOffset));
     public static StatFloat accelerationStat = new StatFloat(StatType.Acceleration, 7, new Vector2(1.0f, 2.0f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Acceleration + GlobalSeedOffset));
     public static StatFloat rotationStat = new StatFloat(StatType.RotationSpeed, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationSpeed + GlobalSeedOffset));
