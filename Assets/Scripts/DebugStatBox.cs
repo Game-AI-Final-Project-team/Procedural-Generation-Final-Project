@@ -11,6 +11,7 @@ public class DebugStatBox : MonoBehaviour
 
     void Update()
     {
+        if (!EnemyStatManager.DebugMode) return;
         int x = (int)playerTransform.position.x;
         int y = (int)playerTransform.position.y;
 
