@@ -16,10 +16,11 @@ public class PlayerAttackingScript : MonoBehaviour
 		if(attacking)
 		{
 			attacking = false;
-
+			Vector2 playerVelocity = GetComponent<PlayerMovement>().velocity;
+			playerVelocity *= 1 / Time.fixedDeltaTime;
 			Vector3 spawnPos = transform.position + transform.right * 1;
 			GameObject fireball = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
-			if (fireball.TryGetComponent<FireballScript>(out var fScript)) fScript.Init(transform.position);
+			if (fireball.TryGetComponent<FireballScript>(out var fScript)) fScript.Init(transform.position, playerVelocity);
 		}
 	}
 }

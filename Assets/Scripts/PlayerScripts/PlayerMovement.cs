@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header ("Stats")]
     Vector2 movementInput = Vector2.zero;
-    Vector2 velocity = Vector2.zero;
+    public Vector2 velocity = Vector2.zero;
     [SerializeField] float acceleration = 5;
     [SerializeField] float damping = .8f;
     [Header("Debug")]

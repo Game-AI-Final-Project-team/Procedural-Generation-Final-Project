@@ -3,18 +3,19 @@ using UnityEngine;
 
 public class FireballScript : MonoBehaviour
 {
-	[SerializeField] float moveSpeed = 10;
+	[SerializeField] float moveSpeed = 15;
 	[SerializeField] int damage = 20;
 	[SerializeField] Rigidbody2D rb;
 	[SerializeField] ParticleSystem fireballExplosion;
 
-	public void Init(Vector2 playerPos)
+	public void Init(Vector2 playerPos, Vector2 playerVelocity)
 	{
 		Invoke(nameof(KillProjectile), 10);
 
 		Vector2 direction = ((Vector2)transform.position - playerPos).normalized;
-		rb.linearVelocity = direction * moveSpeed;
-	}
+		rb.linearVelocity = (direction * moveSpeed);
+		rb.linearVelocity += playerVelocity/2;
+    }
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
