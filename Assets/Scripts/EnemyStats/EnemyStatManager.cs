@@ -68,7 +68,8 @@ public static class EnemyStatManager
         { StatType.Scale, "Scale" },  
     };
 
-    static readonly int NoiseWidth = 1024;
+    public static bool DebugMode = true;
+    public static int NoiseWidth = 1024;
     static readonly int NoiseHeight = 1024;
     static readonly float NoiseScale = 10.0f;
     static readonly int GlobalSeedOffset = 20;
