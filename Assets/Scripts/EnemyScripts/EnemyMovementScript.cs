@@ -4,22 +4,22 @@ using static EnemyStatManager;
 
 public class EnemyMovementScript : MonoBehaviour
 {
-	// References
-	Transform target;
+    // References
+    Transform target;
 
-	[Header("Movement Stats")]
-	Vector2 velocity = Vector2.zero;
-	float linearAcceleration = 5;
-	float maxLinearSpeed = 15;
-	float damping = .8f;
+    [Header("Movement Stats")]
+    Vector2 velocity = Vector2.zero;
+    float linearAcceleration = 5;
+    float maxLinearSpeed = 15;
+    float damping = .8f;
 
-	[Header("Rotation Stats")]
-	float rotationAcceleration = 3;
-	float rotationVelocity = 0;
-	float maxRotationSpeed = 5;
+    [Header("Rotation Stats")]
+    float rotationAcceleration = 3;
+    float rotationVelocity = 0;
+    float maxRotationSpeed = 5;
 
 
-	[HideInInspector] public EnemyStats enemyStats = new EnemyStats();
+    [HideInInspector] public EnemyStats enemyStats = new EnemyStats();
 
     public Rigidbody2D rb;
     public GameObject player;
@@ -27,6 +27,8 @@ public class EnemyMovementScript : MonoBehaviour
     float rotate = 0.0f;
     float destRotate = 0.0f;
     public float wallRadius;
+
+    public float allyRadius;
     Vector2 distance;
     public float avTotal;
 
@@ -35,30 +37,30 @@ public class EnemyMovementScript : MonoBehaviour
     [SerializeField] public LayerMask enemy;
 
     public void Init(Transform toTrack, float points)
-	{
+    {
         wallRadius = transform.localScale.x * wallRadius;
         avTotal = rotationVelocity;
         target = toTrack;
-		Vector2Int position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-		enemyStats.Initialize(points, position);
+        Vector2Int position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        enemyStats.Initialize(points, position);
         player = GameObject.FindWithTag("Player");
         //enemyStats.PrintStats();
         ApplyStats();
         GetComponent<EnemyCombatScript>().Setup(player.transform, enemyStats);
     }
 
-	private void ApplyStats()
-	{
-		StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
-		float scale = scaleStat.statValue;
-		transform.localScale = new Vector3(scale, scale, scale);
+    private void ApplyStats()
+    {
+        StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
+        float scale = scaleStat.statValue;
+        transform.localScale = new Vector3(scale, scale, scale);
 
-		maxLinearSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
-		linearAcceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
-	}
+        maxLinearSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
+        linearAcceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
+    }
 
-	private void FixedUpdate()
-	{
+    private void FixedUpdate()
+    {
         if (target == null) return;
 
         distance = (target.position - transform.position);
@@ -76,26 +78,30 @@ public class EnemyMovementScript : MonoBehaviour
         fixRotation();
 
         float distanceValue = distance.magnitude;
-        RaycastHit2D hitCurrent = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x/1.5f),
+        RaycastHit2D hitCurrent = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x / 1.5f),
                     (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 4 + new Vector2(transform.position.x, transform.position.y));
 
-        RaycastHit2D hitDest = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x/1.5f),
-                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 3.5f + new Vector2(transform.position.x, transform.position.y));
+        RaycastHit2D hitDest = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x / 1.5f),
+                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 4f + new Vector2(transform.position.x, transform.position.y));
 
-        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x/1.5f),
+        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x / 1.5f),
                     (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 4 + new Vector2(transform.position.x, transform.position.y), Color.yellow);
 
-        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x/1.5f),
-                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 3.5f + new Vector2(transform.position.x, transform.position.y), Color.red);
+        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x / 1.5f),
+                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 4f + new Vector2(transform.position.x, transform.position.y), Color.red);
 
 
         if (hitDest && ((hitDest.collider.gameObject.CompareTag("Wall")) || (hitDest.collider.gameObject.CompareTag("Enemy"))))
         {
             if (hitCurrent && ((hitCurrent.collider.gameObject.CompareTag("Wall")) || (hitCurrent.collider.gameObject.CompareTag("Enemy"))))
             {
-                if (rotationVelocity < maxRotationSpeed)
+                if (rotationVelocity < maxRotationSpeed && rotationVelocity >= 0)
                 {
-                    rotationVelocity += rotationAcceleration;
+                    rotationVelocity += getRadian(rotationAcceleration);
+                }
+                if (rotationVelocity > -maxRotationSpeed && rotationVelocity <= 0)
+                {
+                    rotationVelocity -= getRadian(rotationAcceleration);
                 }
 
                 avTotal += rotationVelocity * Time.deltaTime;
@@ -103,11 +109,19 @@ public class EnemyMovementScript : MonoBehaviour
                 rotate += rotationVelocity * Time.deltaTime;
                 fixRotation();
 
-                if (avTotal > 2.6 || avTotal < -2.6)
+                if (avTotal > 2.6)
                 {
 
-                    rotationVelocity *= -1;
-                    avTotal = rotationVelocity * 1.1f;
+                    rotationVelocity = -0.01f;
+                    avTotal = rotationVelocity;
+                    rotate = avTotal;
+                }
+                if (avTotal < -2.6)
+                {
+
+                    rotationVelocity = 0.01f;
+                    avTotal = rotationVelocity;
+                    rotate = avTotal;
                 }
 
             }
@@ -133,7 +147,7 @@ public class EnemyMovementScript : MonoBehaviour
             }
             else
             {
-                velocity += distance  * Time.fixedDeltaTime * 1000;
+                velocity += distance * Time.fixedDeltaTime * 1000;
             }
             rb.AddForce(velocity);
         }
@@ -142,26 +156,26 @@ public class EnemyMovementScript : MonoBehaviour
             velocity *= damping;
             if (linearAcceleration < maxLinearSpeed)
             {
-                velocity += -distance * linearAcceleration * Time.fixedDeltaTime *1300;
+                velocity += -distance * linearAcceleration * Time.fixedDeltaTime * 1300;
             }
             else
             {
                 velocity += -distance * Time.fixedDeltaTime * 1300;
             }
-            
+
             rb.AddForce(velocity);
         }
 
         RaycastHit2D circle = Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), wallRadius, new Vector2(0, 0), wallRadius, wall);
-        RaycastHit2D circle2 = Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), wallRadius, new Vector2(0, 0), wallRadius, enemy);
+        RaycastHit2D circle2 = Physics2D.CircleCast(new Vector2(transform.position.x, transform.position.y), allyRadius, new Vector2(0, 0), allyRadius, enemy);
 
-        
+
         if (circle && circle.collider.CompareTag("Wall"))
         {
-            
-            rb.AddForce((transform.position - circle.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 2000 * Time.fixedDeltaTime);
+
+            //rb.AddForce((transform.position - circle.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 2000 * Time.fixedDeltaTime);
         }
-        
+
         if (circle2 && circle2.collider.CompareTag("Enemy"))
         {
             if (circle2.collider.GetComponent<Transform>().position != transform.position)
@@ -169,17 +183,17 @@ public class EnemyMovementScript : MonoBehaviour
                 float enDistance = ((2 / (transform.position - circle2.collider.GetComponent<Transform>().position).magnitude) + 1) * 3;
                 rb.AddForce(((transform.position - circle2.collider.GetComponent<Transform>().position) * enDistance) * linearAcceleration * 1000 * Time.fixedDeltaTime);
             }
-            
+
         }
     }
 
     static double DeltaAngle(double current, double target)
-	{
-		double diff = (target - current) % 360.0;  
-		if (diff > 180.0) diff -= 360.0;
-		if (diff < -180.0) diff += 360.0;
-		return diff;   
-	}
+    {
+        double diff = (target - current) % 360.0;
+        if (diff > 180.0) diff -= 360.0;
+        if (diff < -180.0) diff += 360.0;
+        return diff;
+    }
 
     void fixRotation()
     {
@@ -204,6 +218,11 @@ public class EnemyMovementScript : MonoBehaviour
         {
             destRotate -= 2 * (3.14159f);
         }
+    }
+
+    float getRadian(float degree)
+    {
+        return (degree / 180) * Mathf.PI;
     }
 }
 
