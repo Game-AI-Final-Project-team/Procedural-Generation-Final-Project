@@ -448,7 +448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementScript
   rb: {fileID: 9125140229789921480}
   player: {fileID: 0}
-  wallRadius: 1.1
+  wallRadius: 1.2
   allyRadius: 1.2
   avTotal: 0
   wall:

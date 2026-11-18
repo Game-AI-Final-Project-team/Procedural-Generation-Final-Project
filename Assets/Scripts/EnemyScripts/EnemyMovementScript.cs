@@ -28,6 +28,8 @@ public class EnemyMovementScript : MonoBehaviour
     float destRotate = 0.0f;
     public float wallRadius;
 
+    bool triggered = false;
+
     public float allyRadius;
     Vector2 distance;
     public float avTotal;
@@ -79,16 +81,16 @@ public class EnemyMovementScript : MonoBehaviour
 
         float distanceValue = distance.magnitude;
         RaycastHit2D hitCurrent = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x / 1.5f),
-                    (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 4 + new Vector2(transform.position.x, transform.position.y));
+                    (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 5f + new Vector2(transform.position.x, transform.position.y));
 
         RaycastHit2D hitDest = Physics2D.Linecast(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x / 1.5f),
-                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 4f + new Vector2(transform.position.x, transform.position.y));
+                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 5f + new Vector2(transform.position.x, transform.position.y));
 
         Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * (transform.localScale.x / 1.5f),
-                    (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 4 + new Vector2(transform.position.x, transform.position.y), Color.yellow);
+                    (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate)).normalized) * 5f + new Vector2(transform.position.x, transform.position.y), Color.yellow);
 
         Debug.DrawLine(new Vector2(transform.position.x, transform.position.y) + (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * (transform.localScale.x / 1.5f),
-                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 4f + new Vector2(transform.position.x, transform.position.y), Color.red);
+                    (new Vector2(distanceValue * Mathf.Cos(destRotate), distanceValue * Mathf.Sin(destRotate)).normalized) * 5f + new Vector2(transform.position.x, transform.position.y), Color.red);
 
 
         if (hitDest && ((hitDest.collider.gameObject.CompareTag("Wall")) || (hitDest.collider.gameObject.CompareTag("Enemy"))))
@@ -97,33 +99,47 @@ public class EnemyMovementScript : MonoBehaviour
             {
                 if (rotationVelocity < maxRotationSpeed && rotationVelocity >= 0)
                 {
-                    rotationVelocity += getRadian(rotationAcceleration);
+                    rotationVelocity += rotationAcceleration;
                 }
                 if (rotationVelocity > -maxRotationSpeed && rotationVelocity <= 0)
                 {
-                    rotationVelocity -= getRadian(rotationAcceleration);
+                    rotationVelocity -= rotationAcceleration;
                 }
 
                 avTotal += rotationVelocity * Time.deltaTime;
 
                 rotate += rotationVelocity * Time.deltaTime;
+
+                if (triggered)
+                {
+                    avTotal *= -1;
+                    rotate *= -1;
+                    rotationVelocity *= -1;
+                    
+                }
+
                 fixRotation();
 
-                if (avTotal > 2.6)
+                if (avTotal > 3)
                 {
-
+                    rotate = destRotate;
                     rotationVelocity = -0.01f;
                     avTotal = rotationVelocity;
-                    rotate = avTotal;
-                }
-                if (avTotal < -2.6)
-                {
+                    triggered = false;
 
+                }
+                if (avTotal < -3)
+                {
+                    rotate = destRotate;
                     rotationVelocity = 0.01f;
                     avTotal = rotationVelocity;
-                    rotate = avTotal;
+                    triggered = false;
                 }
 
+            }
+            else if (hitCurrent && (!(hitCurrent.collider.gameObject.CompareTag("Wall")) && !(hitCurrent.collider.gameObject.CompareTag("Enemy"))))
+            {
+                triggered = true;
             }
         }
         else
@@ -132,16 +148,17 @@ public class EnemyMovementScript : MonoBehaviour
             avTotal = rotationVelocity;
             rotate = Mathf.Atan(distance.y / distance.x);
             destRotate = Mathf.Atan(distance.y / distance.x);
+            triggered = false;
             fixRotation();
         }
 
 
         distance = (new Vector2(distanceValue * Mathf.Cos(rotate), distanceValue * Mathf.Sin(rotate))).normalized;
 
-        if (distanceValue > 6)
+        if (distanceValue > 6 || destRotate != rotate)
         {
             velocity *= damping;
-            if (linearAcceleration < maxLinearSpeed)
+            if (velocity.magnitude < maxLinearSpeed)
             {
                 velocity += distance * linearAcceleration * Time.fixedDeltaTime * 1000;
             }
@@ -151,10 +168,10 @@ public class EnemyMovementScript : MonoBehaviour
             }
             rb.AddForce(velocity);
         }
-        if (distanceValue < 3)
+        if (distanceValue < 3 && destRotate == rotate)
         {
             velocity *= damping;
-            if (linearAcceleration < maxLinearSpeed)
+            if (velocity.magnitude < maxLinearSpeed)
             {
                 velocity += -distance * linearAcceleration * Time.fixedDeltaTime * 1300;
             }
@@ -173,7 +190,7 @@ public class EnemyMovementScript : MonoBehaviour
         if (circle && circle.collider.CompareTag("Wall"))
         {
 
-            //rb.AddForce((transform.position - circle.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 2000 * Time.fixedDeltaTime);
+            rb.AddForce((transform.position - circle.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 1500 * Time.fixedDeltaTime);
         }
 
         if (circle2 && circle2.collider.CompareTag("Enemy"))
