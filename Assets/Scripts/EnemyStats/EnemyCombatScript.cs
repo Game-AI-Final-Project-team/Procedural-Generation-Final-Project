@@ -13,6 +13,10 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
     [SerializeField] float range = 10f;
     private bool canShoot = true;
 
+    [Header("Stat Data")]
+    [SerializeField] EnemyStatData healthStatData;
+    [SerializeField] EnemyStatData damageStatData;
+
     private Transform player;
     private int damage;
     private int maxHealth;
@@ -25,11 +29,13 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
     {
         player = playerTransform;
 
-        //maxHealth = ((StatInt)stats.GetStat(StatType.Health)).statValue;
+        StatInt healthStat = EnemyStatManager.GetStatData(healthStatData.key) as StatInt;
+        maxHealth = healthStat.statValue;
         currentHealth = maxHealth;
         healthText.text = $"{currentHealth}";
 
-        //damage = ((StatInt)stats.GetStat(StatType.Damage)).statValue;
+        StatInt damageStat = EnemyStatManager.GetStatData(damageStatData.key) as StatInt;
+        damage = damageStat.statValue;
     }
 
     void Update()

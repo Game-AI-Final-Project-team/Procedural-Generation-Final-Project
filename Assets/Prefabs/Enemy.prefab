@@ -446,6 +446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3494bb1e49eb44a92d07266fd98dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementScript
+  scaleStatData: {fileID: 11400000, guid: f9d5a3d213c2d8b499586340d4672cc7, type: 2}
+  speedStatData: {fileID: 11400000, guid: fb34cfb19ba88b247b9c1af6f2327dfb, type: 2}
   rb: {fileID: 9125140229789921480}
   player: {fileID: 0}
   wallRadius: 1.2
@@ -473,3 +475,5 @@ MonoBehaviour:
   fireballPrefab: {fileID: 1156866878527526653, guid: 16cc0dcc7b5e360408565613eee47a34, type: 3}
   fireRate: 5
   range: 10
+  healthStatData: {fileID: 11400000, guid: 2af78e1619bf8b14a9bf66d6612f71c0, type: 2}
+  damageStatData: {fileID: 11400000, guid: 986bc66874dbb274a9a2d1c78dde87ca, type: 2}

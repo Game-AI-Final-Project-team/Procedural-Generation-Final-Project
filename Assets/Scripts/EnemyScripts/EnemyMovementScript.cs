@@ -18,6 +18,10 @@ public class EnemyMovementScript : MonoBehaviour
     float rotationVelocity = 0;
     float maxRotationSpeed = 5;
 
+    [Header("Stat Data")]
+    [SerializeField] EnemyStatData scaleStatData;
+    [SerializeField] EnemyStatData speedStatData;
+
 
     [HideInInspector] public EnemyStats enemyStats;
 
@@ -54,11 +58,12 @@ public class EnemyMovementScript : MonoBehaviour
 
     private void ApplyStats()
     {
-        // StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
-        // float scale = scaleStat.statValue;
-        // transform.localScale = new Vector3(scale, scale, scale);
+        StatFloat scaleStat = EnemyStatManager.GetStatData(scaleStatData.key) as StatFloat;
+        float size = scaleStat.statValue;
+        transform.localScale = new Vector3(size, size, size);
 
-        // maxLinearSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
+        StatFloat speedStat = EnemyStatManager.GetStatData(speedStatData.key) as StatFloat;
+        maxLinearSpeed = speedStat.statValue;
         // linearAcceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
     }
 
