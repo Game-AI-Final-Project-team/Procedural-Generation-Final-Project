@@ -450,7 +450,7 @@ MonoBehaviour:
   speedStatData: {fileID: 11400000, guid: fb34cfb19ba88b247b9c1af6f2327dfb, type: 2}
   rb: {fileID: 9125140229789921480}
   player: {fileID: 0}
-  wallRadius: 1.2
+  wallRadius: 1.4
   allyRadius: 1.2
   avTotal: 0
   wall:
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombatScript
   healthText: {fileID: 8612183928344977812}
   fireballPrefab: {fileID: 1156866878527526653, guid: 16cc0dcc7b5e360408565613eee47a34, type: 3}
-  fireRate: 5
-  range: 10
+  fireRate: 2
+  range: 15
   healthStatData: {fileID: 11400000, guid: 2af78e1619bf8b14a9bf66d6612f71c0, type: 2}
   damageStatData: {fileID: 11400000, guid: 986bc66874dbb274a9a2d1c78dde87ca, type: 2}

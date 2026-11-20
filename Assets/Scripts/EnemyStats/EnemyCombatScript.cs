@@ -22,6 +22,8 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
     private int maxHealth;
     private int currentHealth;
 
+    Rigidbody2D rb;
+
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
 
@@ -36,6 +38,7 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
 
         StatInt damageStat = EnemyStatManager.GetStatData(damageStatData.key) as StatInt;
         damage = damageStat.statValue;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -55,7 +58,7 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
         Vector3 spawnPos = transform.position + dir * 1;
         GameObject fireball = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
         if (fireball.TryGetComponent<EnemyFireballScript>(out var fScript))
-            fScript.Init(transform.position, damage);
+            fScript.Init(transform.position, damage, rb.linearVelocity);
         canShoot = false;
         StartCoroutine(ShotCooldown());
     }

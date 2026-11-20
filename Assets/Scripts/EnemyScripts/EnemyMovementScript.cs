@@ -116,7 +116,7 @@ public class EnemyMovementScript : MonoBehaviour
 
                 rotate += rotationVelocity * Time.deltaTime;
 
-                if (triggered)
+                if (!triggered)
                 {
                     avTotal *= -1;
                     rotate *= -1;
@@ -126,7 +126,7 @@ public class EnemyMovementScript : MonoBehaviour
 
                 fixRotation();
 
-                if (avTotal > 3)
+                if (avTotal > 3.14)
                 {
                     rotate = destRotate;
                     rotationVelocity = -0.01f;
@@ -134,7 +134,7 @@ public class EnemyMovementScript : MonoBehaviour
                     triggered = false;
 
                 }
-                if (avTotal < -3)
+                if (avTotal < -3.14)
                 {
                     rotate = destRotate;
                     rotationVelocity = 0.01f;
@@ -143,7 +143,7 @@ public class EnemyMovementScript : MonoBehaviour
                 }
 
             }
-            else if (hitCurrent && (!(hitCurrent.collider.gameObject.CompareTag("Wall")) && !(hitCurrent.collider.gameObject.CompareTag("Enemy"))))
+            else if (!hitCurrent || (!(hitCurrent.collider.gameObject.CompareTag("Wall")) && !(hitCurrent.collider.gameObject.CompareTag("Enemy"))))
             {
                 triggered = true;
             }
@@ -195,8 +195,8 @@ public class EnemyMovementScript : MonoBehaviour
 
         if (circle && circle.collider.CompareTag("Wall"))
         {
-
-            rb.AddForce((transform.position - circle.collider.GetComponent<Transform>().position).normalized * linearAcceleration * 1500 * Time.fixedDeltaTime);
+            float wlDistance = ((2 / (transform.position - circle.collider.GetComponent<Transform>().position).sqrMagnitude));
+            rb.AddForce(((transform.position - circle.collider.GetComponent<Transform>().position) * wlDistance) * linearAcceleration * 1500 * Time.fixedDeltaTime);
         }
 
         if (circle2 && circle2.collider.CompareTag("Enemy"))

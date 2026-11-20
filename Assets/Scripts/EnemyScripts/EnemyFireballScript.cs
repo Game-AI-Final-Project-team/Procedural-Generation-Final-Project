@@ -9,14 +9,14 @@ public class EnemyFireballScript : MonoBehaviour
 
     private int damage;
 
-    public void Init(Vector2 origin, int damage)
+    public void Init(Vector2 origin, int damage, Vector2 force)
     {
         this.damage = damage;
         Debug.Log("My damage is:" + damage);
         Invoke(nameof(KillProjectile), 10);
 
         Vector2 direction = ((Vector2)transform.position - origin).normalized;
-        rb.linearVelocity = direction * moveSpeed;
+        rb.linearVelocity = (direction * moveSpeed) + force;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
