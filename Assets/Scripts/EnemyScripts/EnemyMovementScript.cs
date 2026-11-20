@@ -203,7 +203,7 @@ public class EnemyMovementScript : MonoBehaviour
         {
             if (circle2.collider.GetComponent<Transform>().position != transform.position)
             {
-                float enDistance = ((2 / (transform.position - circle2.collider.GetComponent<Transform>().position).magnitude) + 1) * 3;
+                float enDistance = ((2 / (transform.position - circle2.collider.GetComponent<Transform>().position).sqrMagnitude)) ;
                 rb.AddForce(((transform.position - circle2.collider.GetComponent<Transform>().position) * enDistance) * linearAcceleration * 1000 * Time.fixedDeltaTime);
             }
 
