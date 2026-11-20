@@ -7,8 +7,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 velocity = Vector2.zero;
     [SerializeField] float acceleration = 5;
     [SerializeField] float damping = .8f;
-    [Header("Debug")]
-    [SerializeField] EnemyStatManager.StatType debugStatType;
 
     void Update()
     {

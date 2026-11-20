@@ -32,12 +32,12 @@ public class EnemyMovementScriptOld : MonoBehaviour
 
 	private void ApplyStats()
 	{
-		StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
-		float scale = scaleStat.statValue;
-		transform.localScale = new Vector3(scale, scale, scale);
+		// StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
+		// float scale = scaleStat.statValue;
+		// transform.localScale = new Vector3(scale, scale, scale);
 
-		maxLinearSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
-		linearAcceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
+		// maxLinearSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
+		// linearAcceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
 	}
 
 	private void FixedUpdate()

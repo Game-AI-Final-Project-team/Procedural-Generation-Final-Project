@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,30 +7,32 @@ public static class EnemyStatManager
 {
     public abstract class Stat
     {
-        public Stat(StatType statType, float cost, Vector2 statRange, PerlinNoise noise)
+        public Stat(string statName, string statKey, float cost, Vector2 statRange, PerlinNoise noise)
         {
             costPerStat = cost;
             statValueRange = statRange;
-            this.statType = statType;
+            this.statName = statName;
+            this.statKey = statKey;
             perlinNoise = noise;
         }
         public Stat(Stat copy)
         {
             costPerStat = copy.costPerStat;
             statValueRange = copy.statValueRange;
-            statType = copy.statType;
+            statName = copy.statName;
             perlinNoise = new PerlinNoise(copy.perlinNoise);
         }
         public Vector2 statValueRange;
         public float costPerStat;
-        public StatType statType;
+        public string statName;
+        public string statKey;
         public PerlinNoise perlinNoise;
     }
 
     public class StatInt : Stat
     {
-        public StatInt(StatType statType, float cost, Vector2 statRange, PerlinNoise noise) : base(statType, cost, statRange, noise) { }
-        public StatInt(StatInt statInt) : base(statInt.statType, statInt.costPerStat, statInt.statValueRange, statInt.perlinNoise)
+        public StatInt(string statName, string statKey, float cost, Vector2 statRange, PerlinNoise noise) : base(statName, statKey, cost, statRange, noise) { }
+        public StatInt(StatInt statInt) : base(statInt.statName, statInt.statKey, statInt.costPerStat, statInt.statValueRange, statInt.perlinNoise)
         {
             statValue = statInt.statValue;
         }
@@ -38,37 +41,13 @@ public static class EnemyStatManager
 
     public class StatFloat : Stat
     {
-        public StatFloat(StatType statType, float cost, Vector2 statRange, PerlinNoise noise) : base(statType, cost, statRange, noise) { }
-        public StatFloat(StatFloat statFloat) : base(statFloat.statType, statFloat.costPerStat, statFloat.statValueRange, statFloat.perlinNoise)
+        public StatFloat(string statName, string statKey, float cost, Vector2 statRange, PerlinNoise noise) : base(statName, statKey, cost, statRange, noise) { }
+        public StatFloat(StatFloat statFloat) : base(statFloat.statName, statFloat.statKey, statFloat.costPerStat, statFloat.statValueRange, statFloat.perlinNoise)
         {
             statValue = statFloat.statValue;
         }
         public float statValue;
     }
-
-    public enum StatType
-    {
-        Health,
-        Damage,
-        MaxSpeed,
-        Acceleration,
-        RotationSpeed,
-        RotationAcceleration,
-        Scale,
-        LAST,
-    }
-
-    public static Dictionary<StatType, string> statsToReadableString = new()
-    {
-        { StatType.Health, "Health" },  
-        { StatType.Damage, "Damage" },  
-        { StatType.MaxSpeed, "Speed" },  
-        { StatType.Acceleration, "Acceleration" },  
-        { StatType.RotationSpeed, "Turning Speed" },  
-        { StatType.RotationAcceleration, "Turning Acceleration" },  
-        { StatType.Scale, "Scale" },  
-    };
-
 
     public static bool DebugMode = true;
     public static int NoiseWidth = 1024;
@@ -77,25 +56,6 @@ public static class EnemyStatManager
     static readonly int GlobalSeedOffset = 20;
 
     public static PerlinNoise terrain = new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, GlobalSeedOffset - 1);
-
-    public static StatInt healthStat = new StatInt(StatType.Health, 0.5f, new Vector2Int(1, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Health + GlobalSeedOffset));
-    public static StatInt damageStat = new StatInt(StatType.Damage, 0.35f, new Vector2Int(0, 1000), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Damage + GlobalSeedOffset));
-    public static StatFloat speedStat = new StatFloat(StatType.MaxSpeed, 15, new Vector2(0, 0.5f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.MaxSpeed + GlobalSeedOffset));
-    public static StatFloat accelerationStat = new StatFloat(StatType.Acceleration, 7, new Vector2(1.0f, 2.0f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Acceleration + GlobalSeedOffset));
-    public static StatFloat rotationStat = new StatFloat(StatType.RotationSpeed, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationSpeed + GlobalSeedOffset));
-    public static StatFloat rotationAccelerationStat = new StatFloat(StatType.RotationAcceleration, 1, new Vector2(0, float.MaxValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.RotationAcceleration + GlobalSeedOffset));
-    public static StatFloat scaleFactorStat = new StatFloat(StatType.Scale, 18, new Vector2(1.0f, 5.0f), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, (int)StatType.Scale + GlobalSeedOffset));
-
-    public static Dictionary<StatType, Stat> statsByStatType = new()
-    {
-        { StatType.Health, healthStat },
-        { StatType.Damage, damageStat },
-        { StatType.MaxSpeed, speedStat },
-        { StatType.Acceleration, accelerationStat },
-        { StatType.RotationSpeed, rotationStat },
-        { StatType.RotationAcceleration, rotationAccelerationStat },
-        { StatType.Scale, scaleFactorStat }  
-    };
 
     private static bool initialized = false;
     private static Dictionary<string, Stat> keyToStat = new Dictionary<string, Stat>();
@@ -110,12 +70,12 @@ public static class EnemyStatManager
         {
             if (statData.clampToInteger)
             {
-                StatInt statInt = new StatInt(StatType.Health, statData.costPerUnitStat, new Vector2Int((int)statData.minimumValue, (int)statData.maximumValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, i + GlobalSeedOffset));
+                StatInt statInt = new StatInt(statData.statName, statData.key, statData.costPerUnitStat, new Vector2Int((int)statData.minimumValue, (int)statData.maximumValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, i + GlobalSeedOffset));
                 keyToStat[statData.key] = statInt;
             }
             else
             {
-                StatFloat statFloat = new StatFloat(StatType.Health, statData.costPerUnitStat, new Vector2(statData.minimumValue, statData.maximumValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, i + GlobalSeedOffset));
+                StatFloat statFloat = new StatFloat(statData.statName, statData.key, statData.costPerUnitStat, new Vector2(statData.minimumValue, statData.maximumValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, i + GlobalSeedOffset));
                 keyToStat[statData.key] = statFloat;
             }
             i++;
@@ -123,9 +83,68 @@ public static class EnemyStatManager
 
         foreach(Stat stat in keyToStat.Values)
         {
-            Debug.Log($"Stat cost per stat: {stat.costPerStat}");
+            Debug.Log($"Stat Name: {stat.statName} Stat cost per stat: {stat.costPerStat}");
         }
 
         initialized = true;
     }
+
+    public static Stat GetStatData(string statKey)
+    {
+        if (!IsInitialized())
+        {
+            Debug.LogWarning("Stats are not initialized yet!");
+            return null;
+        }
+
+        if (keyToStat.ContainsKey(statKey))
+        {
+            return keyToStat[statKey];
+        }
+        else
+        {
+            Debug.LogWarning($"There is no stat with a key of {statKey}!");
+            return null;
+        }
+    }
+
+    public static Stat GetStatData(int index)
+    {
+        if (!IsInitialized())
+        {
+            Debug.LogWarning("Stats are not initialized yet!");
+            return null;
+        }
+
+        if (StatCount >= index && index >= 0)
+        {
+            return keyToStat.Values.ToList()[index];
+        }
+        else
+        {
+            Debug.LogWarning($"Index out of bounds!");
+            return null;
+        }
+    }
+
+    public static List<Stat> GetAllStatData()
+    {
+        if (!IsInitialized())
+        {
+            Debug.LogWarning("Stats are not initialized yet!");
+            return null;
+        }
+
+        if (keyToStat.Values.Count <= 0)
+        {
+            Debug.LogWarning("No Stats were found!");
+            return null;
+        }
+
+        return keyToStat.Values.ToList();
+    }
+
+    public static int StatCount => keyToStat.Values.Count;
+
+    public static bool IsInitialized() { return initialized; } 
 }

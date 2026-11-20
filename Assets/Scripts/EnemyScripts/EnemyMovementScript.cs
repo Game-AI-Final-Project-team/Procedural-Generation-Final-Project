@@ -19,7 +19,7 @@ public class EnemyMovementScript : MonoBehaviour
     float maxRotationSpeed = 5;
 
 
-    [HideInInspector] public EnemyStats enemyStats = new EnemyStats();
+    [HideInInspector] public EnemyStats enemyStats;
 
     public Rigidbody2D rb;
     public GameObject player;
@@ -44,6 +44,7 @@ public class EnemyMovementScript : MonoBehaviour
         avTotal = rotationVelocity;
         target = toTrack;
         Vector2Int position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        enemyStats = new EnemyStats();
         enemyStats.Initialize(points, position);
         player = GameObject.FindWithTag("Player");
         //enemyStats.PrintStats();
@@ -53,12 +54,12 @@ public class EnemyMovementScript : MonoBehaviour
 
     private void ApplyStats()
     {
-        StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
-        float scale = scaleStat.statValue;
-        transform.localScale = new Vector3(scale, scale, scale);
+        // StatFloat scaleStat = enemyStats.GetStat(StatType.Scale) as StatFloat;
+        // float scale = scaleStat.statValue;
+        // transform.localScale = new Vector3(scale, scale, scale);
 
-        maxLinearSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
-        linearAcceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
+        // maxLinearSpeed = (enemyStats.GetStat(StatType.MaxSpeed) as StatFloat).statValue;
+        // linearAcceleration = (enemyStats.GetStat(StatType.Acceleration) as StatFloat).statValue;
     }
 
     private void FixedUpdate()

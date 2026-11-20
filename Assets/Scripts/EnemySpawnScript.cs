@@ -51,7 +51,7 @@ public class EnemySpawnScript : MonoBehaviour
 
             float pointsForEnemy = pointsAllocated / maxEnemiesTotal;
             pointsForEnemy += Random.Range(-randomPointVariance, randomPointVariance);
-            pointsForEnemy = Mathf.Clamp(pointsForEnemy, (int)EnemyStatManager.StatType.LAST, pointsAllocated - (pointsCurrentlyAllocated + (maxEnemiesTotal - enemiesSpawned) * (int)EnemyStatManager.StatType.LAST));
+            pointsForEnemy = Mathf.Clamp(pointsForEnemy, EnemyStatManager.StatCount, pointsAllocated - (pointsCurrentlyAllocated + (maxEnemiesTotal - enemiesSpawned) * EnemyStatManager.StatCount));
 
             enemiesSpawned++;
             if (enemiesSpawned == maxEnemiesTotal)

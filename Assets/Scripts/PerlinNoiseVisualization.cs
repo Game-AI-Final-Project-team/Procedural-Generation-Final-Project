@@ -5,14 +5,14 @@ using static EnemyStatManager;
 
 public class PerlinNoiseVisualization : MonoBehaviour
 {
-    [SerializeField] StatType statType;
+    [SerializeField] EnemyStatData enemyStatData;
     private Image image;
     private PerlinNoise noise;
     private Texture2D noiseTexture;
     private Color[] pix;
     void Start()
     {
-        Stat stat = statsByStatType[statType];
+        Stat stat = GetStatData(enemyStatData.key);
         Debug.Log($"{gameObject.name} test 1 {stat.perlinNoise.GetNoiseValue(0, 0)}");
         noise = new PerlinNoise(stat.perlinNoise);
         Debug.Log($"{gameObject.name} test 2 {noise.GetNoiseValue(0, 0)}");

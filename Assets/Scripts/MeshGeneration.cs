@@ -5,7 +5,7 @@ public class MeshGeneration : MonoBehaviour
 {
     [SerializeField] Vector2Int _dimensions;
     [SerializeField] bool terrain;
-    [SerializeField] EnemyStatManager.StatType _statType;
+    [SerializeField] EnemyStatData _statData;
     private Vector2 _offset;
     Color32 NoiseColor(float value)
     {
@@ -54,7 +54,7 @@ public class MeshGeneration : MonoBehaviour
     public void Awake()
     {
         if (terrain) GenerateMesh(EnemyStatManager.terrain);
-        else GenerateMesh(EnemyStatManager.statsByStatType[_statType].perlinNoise);
+        else GenerateMesh(EnemyStatManager.GetStatData(_statData.key).perlinNoise);
     }
     
     public void GenerateMesh(PerlinNoise noise)

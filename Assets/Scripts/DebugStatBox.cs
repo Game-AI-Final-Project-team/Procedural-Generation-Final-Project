@@ -19,9 +19,10 @@ public class DebugStatBox : MonoBehaviour
         str.Append($"Coordinates: ({x}, {y})\n");
         str.Append("Stat Weights At Player Location:\n");
 
-        for (int i = 0; i < (int)StatType.LAST; i++)
+        for (int i = 0; i < StatCount; i++)
         {
-            str.Append($"{statsToReadableString[(StatType)i]}: {statsByStatType[(StatType)i].perlinNoise.GetNoiseValue(x, y).ToString("F2")}\n");
+            Stat stat = GetStatData(i);
+            str.Append($"{stat.statName}: {stat.perlinNoise.GetNoiseValue(x, y).ToString("F2")}\n");
         }
         statsText.text = str.ToString();
     }

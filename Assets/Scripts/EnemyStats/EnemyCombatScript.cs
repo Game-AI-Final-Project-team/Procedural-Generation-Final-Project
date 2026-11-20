@@ -25,11 +25,11 @@ public class EnemyCombatScript : MonoBehaviour, IHasHealth
     {
         player = playerTransform;
 
-        maxHealth = ((StatInt)stats.GetStat(StatType.Health)).statValue;
+        //maxHealth = ((StatInt)stats.GetStat(StatType.Health)).statValue;
         currentHealth = maxHealth;
         healthText.text = $"{currentHealth}";
 
-        damage = ((StatInt)stats.GetStat(StatType.Damage)).statValue;
+        //damage = ((StatInt)stats.GetStat(StatType.Damage)).statValue;
     }
 
     void Update()

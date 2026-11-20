@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using static EnemyStatManager;
@@ -7,25 +8,17 @@ using static EnemyStatManager;
 [Serializable]
 public class EnemyStats
 {
-    private Dictionary<StatType, Stat> stats = new()
-    {
-        { StatType.Health, new StatInt(healthStat)},
-        { StatType.Damage, new StatInt(damageStat)},
-        { StatType.MaxSpeed, new StatFloat(speedStat)},
-        { StatType.Acceleration, new StatFloat(accelerationStat)},
-        { StatType.RotationSpeed, new StatFloat(rotationStat)},
-        { StatType.RotationAcceleration, new StatFloat(rotationAccelerationStat)},
-        { StatType.Scale, new StatFloat(scaleFactorStat)},
-    };
-
     private float _enemyPointsGiven = 0;
     private float _pointsUsed = 0;
 
     private readonly float Contrast = 3.0f;
     private const float Epsilon = 0.0001f;
 
+    List<Stat> stats;
+
     public void Initialize(float points, Vector2Int position)
     {
+        stats = GetAllStatData();
         AllocatePoints(points, position);
     }
 
@@ -34,7 +27,7 @@ public class EnemyStats
         _enemyPointsGiven = points;
         _pointsUsed = 0f;
 
-        int numStats = (int)StatType.LAST;
+        int numStats = StatCount;
         float[] weights = new float[numStats];  // How much each stat is valued at (not the cost to buy it)
         float[] capacity = new float[numStats]; // The maximum points possible for a stat
         float[] budget = new float[numStats];   // How much can be spent on a stat
@@ -43,7 +36,7 @@ public class EnemyStats
 
         for (int i = 0; i < numStats; i++)
         {
-            Stat stat = stats[(StatType)i];
+            Stat stat = stats[i];
             weights[i] = Mathf.Pow(stat.perlinNoise.GetNoiseValue(position), Contrast);
             capacity[i] = MaxPoints(stat);
             allStats[i] = true;
@@ -55,7 +48,7 @@ public class EnemyStats
         float[] progressToNextUnit = new float[numStats];
         for (int i = 0; i < numStats; i++)
         {
-            if (stats[(StatType)i] is StatInt statInt)
+            if (stats[i] is StatInt statInt)
             {
                 float exactUnits = budget[i] / statInt.costPerStat;
                 int units = Mathf.FloorToInt(exactUnits + Epsilon);
@@ -78,7 +71,7 @@ public class EnemyStats
             {
                 if (progressToNextUnit[i] < 0f) continue;
 
-                float cost = ((StatInt)stats[(StatType)i]).costPerStat;
+                float cost = ((StatInt)stats[i]).costPerStat;
 
                 if (cost > leftover + Epsilon) continue;
                 if (budget[i] + cost > capacity[i] + Epsilon) continue;
@@ -87,7 +80,7 @@ public class EnemyStats
             }
             if (best == -1) break;
 
-            float bestCost = ((StatInt)stats[(StatType)best]).costPerStat;
+            float bestCost = ((StatInt)stats[best]).costPerStat;
             budget[best] += bestCost;
             leftover -= bestCost;
             progressToNextUnit[best] = -1f;
@@ -97,7 +90,7 @@ public class EnemyStats
 
         for (int i = 0; i < numStats; i++)
         {
-            SetStat((StatType)i, budget[i]);
+            SetStat(i, budget[i]);
             _pointsUsed += budget[i];
         }
     }
@@ -166,9 +159,9 @@ public class EnemyStats
         return 0f;
     }
 
-    void SetStat(StatType statType, float value)
+    void SetStat(int index, float value)
     {
-        Stat stat = stats[statType];
+        Stat stat = stats[index];
         Vector2 range = stat.statValueRange;
         switch (stat)
         {
@@ -182,24 +175,24 @@ public class EnemyStats
         }
     }
 
-    public Stat GetStat(StatType statType)
+    public Stat GetStat(string key)
     {
-        return stats[statType];
+        return stats.FirstOrDefault(e => e.statKey == key);
     }
 
     public void PrintStats()
     {
         StringBuilder str = new StringBuilder();
         str.Append($"Total Points: {_enemyPointsGiven}\n");
-        for (int i = 0; i < (int)StatType.LAST; i++)
+        for (int i = 0; i < StatCount; i++)
         {
-            switch (stats[(StatType)i])
+            switch (stats[i])
             {
                 case StatInt statInt:
-                    str.Append($"{statInt.statType}: {statInt.statValue}\n");
+                    str.Append($"{statInt.statName}: {statInt.statValue}\n");
                     break;
                 case StatFloat statFloat:
-                    str.Append($"{statFloat.statType}: {statFloat.statValue}\n");
+                    str.Append($"{statFloat.statName}: {statFloat.statValue}\n");
                     break;
             }
         }
