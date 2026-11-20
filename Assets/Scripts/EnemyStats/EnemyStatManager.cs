@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class EnemyStatManager
@@ -68,6 +69,7 @@ public static class EnemyStatManager
         { StatType.Scale, "Scale" },  
     };
 
+
     public static bool DebugMode = true;
     public static int NoiseWidth = 1024;
     static readonly int NoiseHeight = 1024;
@@ -94,4 +96,36 @@ public static class EnemyStatManager
         { StatType.RotationAcceleration, rotationAccelerationStat },
         { StatType.Scale, scaleFactorStat }  
     };
+
+    private static bool initialized = false;
+    private static Dictionary<string, Stat> keyToStat = new Dictionary<string, Stat>();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    static void Initialize()
+    {
+        List<EnemyStatData> enemyStatDatas = StatLoader.GetAllEnemyStatData();
+
+        int i = 0;
+        foreach (EnemyStatData statData in enemyStatDatas)
+        {
+            if (statData.clampToInteger)
+            {
+                StatInt statInt = new StatInt(StatType.Health, statData.costPerUnitStat, new Vector2Int((int)statData.minimumValue, (int)statData.maximumValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, i + GlobalSeedOffset));
+                keyToStat[statData.key] = statInt;
+            }
+            else
+            {
+                StatFloat statFloat = new StatFloat(StatType.Health, statData.costPerUnitStat, new Vector2(statData.minimumValue, statData.maximumValue), new PerlinNoise(NoiseWidth, NoiseHeight, NoiseScale, i + GlobalSeedOffset));
+                keyToStat[statData.key] = statFloat;
+            }
+            i++;
+        }
+
+        foreach(Stat stat in keyToStat.Values)
+        {
+            Debug.Log($"Stat cost per stat: {stat.costPerStat}");
+        }
+
+        initialized = true;
+    }
 }
